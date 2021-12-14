@@ -17,40 +17,36 @@ void Text()
     glBindVertexArray(0);
 }
 
-void RenderText(Texture font, Shader textShader, std::string text, float x, float y, float scale, glm::vec3 color)
+void RenderText(Texture font, int textShader, std::string text, float x, float y, float scale, glm::vec3 color)
 {
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // activate corresponding render state	
-    textShader.use();
-    glUniform3f(glGetUniformLocation(textShader.ID, "textColor"), color.x, color.y, color.z);
-    textShader.setMat4("projection", glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
-    textShader.setVec2("atlasSize", 128, 48);
+    glUseProgram(textShader);
+    glUniform3f(glGetUniformLocation(textShader, "textColor"), color.x, color.y, color.z);
+    glUniformMatrix4fv(glGetUniformLocation(textShader, "projection"), 1, GL_FALSE, &glm::ortho(0.0f, 800.0f, 0.0f, 600.0f)[0][0]);
+    glUniform2f(glGetUniformLocation(textShader, "atlasSize"), 128, 48);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(textVAO);
 
-    //int i = 0;
     int cursorPositionX = 0;
     int cursorPositionY = 0;
     for (char const& c : text)
     {
         char chr = toascii(c);
-        
-        //Character ch = Characters[*c];
+
 
         float xpos = x + (8 * (cursorPositionX * 2));
         float ypos = y + (8 * cursorPositionY);
 
         float w = 8 * scale;
         float h = 8 * scale;
-        // update VBO for each character
 
         float u = 0;
         float v = 0;
         
-        // I couldn't figure out how to make this work dynamically, so I just used a massive switch statement. No, I'm not going to refactor this.
+        // Massive switch satement because I couldn't figure out how to make this work dynamically
         switch (chr)
         {
         case '\n':
@@ -343,7 +339,7 @@ void RenderText(Texture font, Shader textShader, std::string text, float x, floa
             u = 14 * 8; v = 5 * 8;
             break;
         }
-        
+
 
 
         float vertices[6][4] = {
@@ -357,7 +353,6 @@ void RenderText(Texture font, Shader textShader, std::string text, float x, floa
         };
 
         // render glyph texture over quad
-        //glBindTexture(GL_TEXTURE_2D, ch.textureID);
         font.use(0);
 
         // update content of VBO memory
@@ -374,3 +369,4 @@ void RenderText(Texture font, Shader textShader, std::string text, float x, floa
 
     glDisable(GL_BLEND);
 }
+
