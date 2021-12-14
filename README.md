@@ -1,3 +1,3 @@
 # OpenGL-Text
 
-Needs GLAD to be in `%INCLUDE_PATH%/glad/glad.h` and also needs `texture.h` to be in %INCLUDE_PATH%/texture.h`
+Needs the contents of the `includes` file to be in the include path. Yes, there's a massive switch statement. No, I'm not going to refactor that.
