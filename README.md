@@ -1,6 +1,6 @@
 # OpenGL-Text
 
-Needs the contents of both the `includes` and `lib` files to be in their respective paths. Also needs `font.png` to be in the working directory of the EXE.
+Needs the contents of the `includes` file to be in the include path. Also needs `font.png` to be in the working directory of the EXE.
 
 Usage example: 
 
